@@ -9,41 +9,40 @@ typedef struct S_BSTNode {
 	S_BSTNode* right;
 } BSTNode;
 
-int addNode(BSTNode* root, int number) {
-	BSTNode* newNode = new BSTNode;
-	if (newNode == NULL) {
-		return 0;
+bool addNodeR(BSTNode** root, int number) {
+	if (*root == NULL) {
+		BSTNode *newNode = new BSTNode;
+		if (!newNode) {
+			return false;
+		}
+		newNode->number = number;
+		*root = newNode;
+		return true;
 	}
-
-	newNode->number = number;	
-	
-	if (root == NULL) {
-		root = newNode;
-	}
-	else if ( number < root->number ) {
-		addNode(root->left, number);
+	else if ((*root)->number > number) {
+		return addNodeR(&(*root)->left, number);
 	}
 	else {
-		addNode(root->right, number);
+		return addNodeR(&(*root)->right, number);
 	}
-	return 1;
 }
 
-BSTNode* deleteNode(BSTNode* root, int number) {
+
+/*BSTNode* deleteNode(BSTNode** root, int number) {
 	
 	return NULL;
-}
+}*/
 
-BSTNode* findNode(BSTNode* root, int number) {
+BSTNode* findNodeR(BSTNode* root, int number) {
 	if (root != NULL) {
 		if (number == root->number) {
 			return root;
 		}
 		else if (number < root->number ) {
-			return findNode(root->left, number);
+			return findNodeR(root->left, number);
 		}
 		else {
-			return findNode(root->right, number);
+			return findNodeR(root->right, number);
 		}
 	}
 	else {
@@ -51,27 +50,11 @@ BSTNode* findNode(BSTNode* root, int number) {
 	}
 }
 
-void printTreePreOrder(BSTNode* root) {
-	if (root != NULL ) {
-		cout << root->number << " ";
-		printTreePreOrder(root->left);
-		printTreePreOrder(root->right);
+void printTreeInOrderR(BSTNode** root) {
+	if (*root != NULL) {
+		printTreeInOrderR(&(*root)->left);
+		cout<<(*root)->number<<" ";
+		printTreeInOrderR(&(*root)->right);
 	}
+	
 }
-
-void printTreeInOrder(BSTNode* root) {
-	if (root != NULL) {
-		printTreeInOrder(root->left);
-		cout << root->number << " ";
-		printTreeInOrder(root->right);
-	}
-}
-
-void printTreePostOrder(BSTNode* root) {
-	if (root != NULL) {
-		printTreePostOrder(root->left);
-		printTreePostOrder(root->right);
-		cout << root->number << " ";
-	}
-}
-
