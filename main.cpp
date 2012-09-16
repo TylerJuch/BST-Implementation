@@ -15,8 +15,11 @@ int main() {
 	}	
 	printTreeInOrderR(&root);
 	
+	cout<<endl<<"Adding new node of \"4\""<<endl;
 	addNodeR(&root, 4);
 	printTreeInOrderR(&root);
+	cout<<endl;
+	
 	if (findNodeR(root, 4) != NULL) {
 		cout<<"Found node with 4"<<endl;
 	}
@@ -24,6 +27,10 @@ int main() {
 		cout<<"Did not find node with 11"<<endl;
 	}
 	
+	cout<<"Removing node of \"4\" that was just added."<<endl;
+	deleteNodeR(&root, 4);
+	printTreeInOrderR(&root);
 	cout<<endl;
+	
 	return 0;
 }

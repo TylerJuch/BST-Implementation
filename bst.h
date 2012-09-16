@@ -3,11 +3,17 @@
 
 using namespace std;
 
-typedef struct S_BSTNode {
+struct BSTNode {
 	int number;
-	S_BSTNode* left;
-	S_BSTNode* right;
-} BSTNode;
+	BSTNode* left;
+	BSTNode* right;
+};
+
+bool addNodeR(BSTNode** root, int number);
+bool deleteNodeR(BSTNode** root, int number);
+BSTNode* promoteNode(BSTNode** root);
+BSTNode* findNodeR(BSTNode* root, int number);
+void printTreeInOrderR(BSTNode** root);
 
 bool addNodeR(BSTNode** root, int number) {
 	if (*root == NULL) {
@@ -28,10 +34,42 @@ bool addNodeR(BSTNode** root, int number) {
 }
 
 
-/*BSTNode* deleteNode(BSTNode** root, int number) {
-	
-	return NULL;
-}*/
+bool deleteNodeR(BSTNode** root, int number) {
+	if (root == NULL) {
+		return NULL;
+	}
+	else {
+		if ((*root)->number == number) {
+			BSTNode* tempRoot = *root;
+			promoteNode(root);
+			delete tempRoot;
+		}
+		else if ((*root)->number > number ) {
+			deleteNodeR(&(*root)->left, number);
+		}
+		else {
+			deleteNodeR(&(*root)->right, number);
+		}
+	}
+}
+
+BSTNode* promoteNode(BSTNode** root) {
+	if ((*root)->left != NULL ) {
+		BSTNode* tempRight = (*root)->right;
+		*root = (*root)->left;
+		(*root)->left = promoteNode(&(*root)->left);
+		(*root)->right = tempRight;
+	}
+	else if ((*root)->right != NULL ) {
+		BSTNode* tempLeft = (*root)->left;
+		*root = (*root)->right;
+		(*root)->right = promoteNode(&(*root)->right);
+		(*root)->left = tempLeft;
+	}
+	else {
+		return NULL;
+	}
+}
 
 BSTNode* findNodeR(BSTNode* root, int number) {
 	if (root != NULL) {
